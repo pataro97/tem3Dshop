@@ -1,7 +1,9 @@
-# Tem3Dshop
+### Tem3Dshop
 
 url: https://pataro97.github.io/tem3Dshop/.
-update page: ng build --prod --base-href="/tem3Dshop/".
+update page: ng deploy --base-href=/tem3Dshop/.
+ng build --prod --base-href="/tem3Dshop/".
+
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.0.5.
 
