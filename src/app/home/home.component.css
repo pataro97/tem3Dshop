@@ -1,0 +1,10 @@
+.mat-card {
+    width: 285px;
+    float:left;
+    margin: 1%;
+}
+
+body {
+    margin-left: 10%;
+    margin-right: 5%;
+}
