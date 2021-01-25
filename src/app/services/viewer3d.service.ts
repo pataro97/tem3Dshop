@@ -47,7 +47,7 @@ export class Viewer3dService implements OnDestroy {
     });
 
     // -------------- size windows 
-    this.renderer.setSize(window.innerWidth -1000, window.innerHeight-400);
+    // this.renderer.setSize(window.innerWidth, window.innerHeight);
     // this.renderer.setSize(300, 300);
 
     // create the scene
@@ -122,12 +122,12 @@ export class Viewer3dService implements OnDestroy {
   }
 
   public resize(): void {
-    const width = window.innerWidth - 1000;
-    const height = window.innerHeight - 400;
+    // const width = window.innerWidth;
+    // const height = window.innerHeight;
     // this.camera.aspect = width / height;
     this.camera.updateProjectionMatrix();
 
-    this.renderer.setSize(width, height);
+    // this.renderer.setSize(width, height);
   }
 
 
