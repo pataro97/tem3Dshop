@@ -30,7 +30,7 @@
         <canvas class="renderCanvas" #rendererCanvas id="renderCanvas"></canvas>
     </div>
     <!-- carousel -->
-    <div id="carousel" class="material-icons" id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+    <div id="carousel" class="material-icons" class="carousel slide" data-ride="carousel">
       <div class="carousel-inner">
         <div class="carousel-item active">
           <img class="d-block w-100" src="https://cdn.thingiverse.com/assets/58/74/0c/cc/86/featured_preview_Main-1.jpg" alt="First slide">
@@ -53,8 +53,10 @@
     </div>
 
     <mat-card-content>
-      <p (click)="showCanvas = !showCanvas" (click)="loadCanvas()">
+      <p>
         Lorem ipsum dolor sit amet consectetur adipisicing elit.
+      <a (click)="showCanvas = !showCanvas" (click)="loadCanvas()" class="btn btn-primary" role="button">View</a>
+
       </p>
     </mat-card-content>
   </mat-card>
