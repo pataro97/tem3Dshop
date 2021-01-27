@@ -1,7 +1,6 @@
 import * as THREE from 'three';
 import {ElementRef, Injectable, NgZone, OnDestroy} from '@angular/core';
-import { Mesh } from 'three';
-
+import { Material, Mesh } from 'three';
 var STLLoader = require('three-stl-loader')(THREE)
 var loader = new STLLoader()
 var OrbitControls = require('three-orbit-controls')(THREE)
@@ -21,13 +20,7 @@ export class Viewer3dService implements OnDestroy {
   private frameId: number = null;
 
   public constructor(private ngZone: NgZone) {
-    window.onresize = (e) =>
-    {
-        //ngZone.run will help to run change detection
-        this.ngZone.run(() => {
-            this.resize();
-        });
-    };
+   
   }
 
   public ngOnDestroy(): void {
@@ -36,7 +29,16 @@ export class Viewer3dService implements OnDestroy {
     }
   }
 
-  public createScene(canvas: ElementRef<HTMLCanvasElement>, model): void {
+  public createScene(canvas: ElementRef<HTMLCanvasElement>, model, canvasStatus): void {
+    window.onresize = (e) =>
+    {
+        //ngZone.run will help to run change detection
+        this.ngZone.run(() => {
+          if(canvasStatus) {
+            this.resize();
+          }
+        });
+    };
     // The first step is to get the reference of the canvas element from our HTML document
     this.canvas = canvas.nativeElement;
 
@@ -52,7 +54,7 @@ export class Viewer3dService implements OnDestroy {
 
     // create the scene
     this.scene = new THREE.Scene();
-
+    this.scene.background = new THREE.Color( 0xe0e0e0 );
     this.camera = new THREE.PerspectiveCamera(
       75, window.innerWidth / window.innerHeight, 0.1, 1000
     );
@@ -62,11 +64,10 @@ export class Viewer3dService implements OnDestroy {
     this.scene.add(this.camera);
 
     // soft white light
-    // this.light = new THREE.AmbientLight(0xffffff);
+    // var light = new THREE.AmbientLight(0xffffff, 2.0);
     var light = new THREE.DirectionalLight(0xffffff, 2.0);
-    
-    // this.light.position.z = 10;
-    // this.light.position.z = 5;
+    light.castShadow = false;
+    // light.position.z = 10;
     this.scene.add(light);
 
 
@@ -76,34 +77,33 @@ export class Viewer3dService implements OnDestroy {
 
     // load stl
     loader.load(model, geometry => {
-      // var material = new THREE.MeshPhongMaterial( { color: 0xBEBEBE } );
-      var material = new THREE.MeshNormalMaterial({
+      // var material = new THREE.Material();
+      // material.visible = true;
+
+      var material = new THREE.MeshPhysicalMaterial({});
+      material.color = new THREE.Color(0x2194ce);
+      material.emissive = new THREE.Color(0x70659);
+      material.roughness = 1;
+      material.metalness = 1;
+      material.reflectivity = 1;
+      material.clearcoat = 1;
+      // var material = new THREE.MeshNormalMaterial({
         
-      })
+      // })
+
+
+      // var material = new THREE.MeshPhysicalMaterial({
+      //   color:0xf3ffe2
+      // })
+      
       var mesh = new THREE.Mesh(geometry, material);
       mesh.position.x = -1.5
       this.scene.add(mesh)
     })
 
-
   }
 
   public animate(): void {
-    // We have to run this outside angular zones,
-    // because it could trigger heavy changeDetection cycles.
-    // this.ngZone.runOutsideAngular(() => {
-    //   if (document.readyState !== 'loading') {
-    //     this.render();
-    //   } else {
-    //     window.addEventListener('DOMContentLoaded', () => {
-    //       this.render();
-    //     });
-    //   }
-
-    //   window.addEventListener('resize', () => {
-    //     this.resize();
-    //   });
-    // });
     this.camera.lookAt( this.scene.position );
 
     this.renderer.render(this.scene, this.camera);
@@ -112,13 +112,13 @@ export class Viewer3dService implements OnDestroy {
   }
 
   public render(): void {
-    this.frameId = requestAnimationFrame(() => {
-      this.render();
-    });
-
     this.camera.rotation.x += 0.01;
     this.camera.rotation.y += 0.01;
     this.renderer.render(this.scene, this.camera);
+    
+    this.frameId = requestAnimationFrame(() => {
+      this.render();
+    });
   }
 
   public resize(): void {

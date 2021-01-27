@@ -27,7 +27,7 @@ export class HomeComponent implements OnInit {
   public loadCanvas(): void {
     $('#canvas').removeAttr('hidden');
     $('#carousel').hide().css("display", "none");
-    this.viewer.createScene(this.rendererCanvas, 'https://cdn.coursesaver.com/files/Part26-4.STL');
+    this.viewer.createScene(this.rendererCanvas, 'https://cdn.coursesaver.com/files/Part26-4.STL', this.showCanvas);
     this.viewer.animate();
   }
 
