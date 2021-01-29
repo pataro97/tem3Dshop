@@ -29,7 +29,7 @@ export class Viewer3dService implements OnDestroy {
     }
   }
 
-  public createScene(canvas: ElementRef<HTMLCanvasElement>, model, canvasStatus): void {
+  public createScene(canvas: HTMLCanvasElement, model, canvasStatus): void {
     window.onresize = (e) =>
     {
         //ngZone.run will help to run change detection
@@ -40,7 +40,9 @@ export class Viewer3dService implements OnDestroy {
         });
     };
     // The first step is to get the reference of the canvas element from our HTML document
-    this.canvas = canvas.nativeElement;
+    // this.canvas = canvas.nativeElement; parametro: canvas: ElementRef<HTMLCanvasElement>
+    this.canvas = canvas;
+
 
     this.renderer = new THREE.WebGLRenderer({
       canvas: this.canvas,
@@ -101,6 +103,8 @@ export class Viewer3dService implements OnDestroy {
       this.scene.add(mesh)
     })
 
+    // var clear
+    canvasStatus = false;
   }
 
   public animate(): void {
