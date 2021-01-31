@@ -1,7 +1,9 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import { timeStamp } from 'console';
-import {Viewer3dService} from '../services/viewer3d.service';
+import {Viewer3dService} from '../services/viewer3d/viewer3d.service';
 import * as jQuery from 'jquery';
+// Firebase
+import { DbfireService } from '../services/firebase/dbfire.service';
 
 @Component({
   selector: 'app-home',
@@ -11,13 +13,11 @@ import * as jQuery from 'jquery';
 export class HomeComponent implements OnInit {
   showCanvas = false;
 
-
-
   // @ViewChild('rendererCanvas1', {static: true}) //true or false si no es estatico y depende de una variable(*ngIf)
   // public rendererCanvas: ElementRef<HTMLCanvasElement>;
 
 
-  public constructor(private viewer: Viewer3dService) {
+  public constructor(private viewer: Viewer3dService, private dbfireService: DbfireService) {
   }
 
   public ngOnInit(): void {
@@ -25,6 +25,8 @@ export class HomeComponent implements OnInit {
   }
 
   public loadCanvas(id) {
+    var url = this.dbfireService.referenciaCloudStorage('gs://tem3dshop.appspot.com/img/temporizador.PNG');
+    alert()
     // obtener numero canvas
     var target = id.target || id.srcElement || id.currentTarget;
     var idAttr = target.attributes.id; //selecciona atributo
@@ -36,7 +38,7 @@ export class HomeComponent implements OnInit {
     var rendererCanvas = document.querySelector('#renderCanvas'+numCanvas) as HTMLCanvasElement;
     $('#containerC'+numCanvas).removeAttr('hidden');
     $('#carousel'+numCanvas).hide().css("display", "none");
-    this.viewer.createScene(rendererCanvas, 'https://cdn.coursesaver.com/files/Part26-4.STL', this.showCanvas);
+    this.viewer.createScene(rendererCanvas, 'gs://tem3dshop.appspot.com/STL/Temporizador.stl', this.showCanvas);
     this.viewer.animate();
   }
 
