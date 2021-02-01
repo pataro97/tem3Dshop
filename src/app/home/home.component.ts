@@ -12,6 +12,7 @@ import { DbfireService } from '../services/firebase/dbfire.service';
 })
 export class HomeComponent implements OnInit {
   showCanvas = false;
+  result: any;
 
   // @ViewChild('rendererCanvas1', {static: true}) //true or false si no es estatico y depende de una variable(*ngIf)
   // public rendererCanvas: ElementRef<HTMLCanvasElement>;
@@ -21,12 +22,11 @@ export class HomeComponent implements OnInit {
   }
 
   public ngOnInit(): void {
+    this.result = this.dbfireService.getURL();
     
   }
 
   public loadCanvas(id) {
-    var url = this.dbfireService.referenciaCloudStorage('gs://tem3dshop.appspot.com/img/temporizador.PNG');
-    alert()
     // obtener numero canvas
     var target = id.target || id.srcElement || id.currentTarget;
     var idAttr = target.attributes.id; //selecciona atributo
@@ -38,7 +38,7 @@ export class HomeComponent implements OnInit {
     var rendererCanvas = document.querySelector('#renderCanvas'+numCanvas) as HTMLCanvasElement;
     $('#containerC'+numCanvas).removeAttr('hidden');
     $('#carousel'+numCanvas).hide().css("display", "none");
-    this.viewer.createScene(rendererCanvas, 'gs://tem3dshop.appspot.com/STL/Temporizador.stl', this.showCanvas);
+    this.viewer.createScene(rendererCanvas, this.result, this.showCanvas);
     this.viewer.animate();
   }
 

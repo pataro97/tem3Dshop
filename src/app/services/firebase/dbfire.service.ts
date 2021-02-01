@@ -1,5 +1,5 @@
-import { getUrlScheme } from '@angular/compiler';
 import { Injectable } from '@angular/core';
+
 
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireStorage } from '@angular/fire/storage';
@@ -8,20 +8,15 @@ import { AngularFireStorage } from '@angular/fire/storage';
   providedIn: 'root'
 })
 export class DbfireService {
-
   constructor(private angularFirestore: AngularFirestore, private storage:AngularFireStorage) { 
+
+  }
+  profileUrl: any;
+
+
+  public getURL() {
+    const ref = this.storage.ref('/img/temporizador.PNG');
+    return this.profileUrl = ref.getDownloadURL();
+  }
   
-
-  }
-
-  //Referencia del archivo
-  public referenciaCloudStorage(nombreArchivo: string) {
-    return this.storage.refFromURL(nombreArchivo);
-  }
-
-  public uploadImage(nombreCarpeta, nombreArchivo, imagenBase64){
-    let storageRef = this.storage.ref(nombreCarpeta).child(nombreArchivo);
-    return storageRef.putString("data:image/jpeg;base64,"+imagenBase64, 'data_url');
-  }
-
 }
