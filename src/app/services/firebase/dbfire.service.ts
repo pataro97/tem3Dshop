@@ -14,8 +14,8 @@ export class DbfireService {
   profileUrl: any;
 
 
-  public getURL() {
-    const ref = this.storage.ref('/img/temporizador.PNG');
+  public getURL(url: string) {
+    const ref = this.storage.ref(url);
     return this.profileUrl = ref.getDownloadURL();
   }
   
