@@ -17,7 +17,6 @@ export class HomeComponent implements OnInit {
   stl: any;
   usuarios: any[] = ['Pepe', 'Juan', 'Manolo', 'Antonio'];
 
-
   public constructor(private viewer: Viewer3dService, private dbfireService: DbfireService) {}
 
   public ngOnInit(): void {
