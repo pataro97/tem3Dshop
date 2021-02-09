@@ -29,6 +29,7 @@
     "jquery": "^3.5.1",
     "ng-mat-carousel": "^0.11.1",
     "rxjs": "~6.5.4",
+    "stl-viewer": "^0.12.0",
     "three": "^0.124.0",
     "three-orbit-controls": "^82.1.0",
     "three-stl-loader": "^1.0.6",

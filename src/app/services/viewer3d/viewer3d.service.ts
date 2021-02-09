@@ -13,6 +13,7 @@ export class Viewer3dService implements OnDestroy {
   private renderer: THREE.WebGLRenderer;
   private camera: THREE.PerspectiveCamera;
   private scene: THREE.Scene;
+  private light = new THREE.DirectionalLight( 0xffffff, 1 );
   // private light: THREE.AmbientLight;
 
   
@@ -30,6 +31,7 @@ export class Viewer3dService implements OnDestroy {
   }
 
   public createScene(canvas: HTMLCanvasElement, model, canvasStatus): void {
+
     window.onresize = (e) =>
     {
         //ngZone.run will help to run change detection
@@ -67,10 +69,10 @@ export class Viewer3dService implements OnDestroy {
 
     // soft white light
     // var light = new THREE.AmbientLight(0xffffff, 2.0);
-    var light = new THREE.DirectionalLight(0xffffff, 2.0);
-    light.castShadow = false;
+    this.light.position.copy( this.camera.position )
     // light.position.z = 10;
-    this.scene.add(light);
+    this.light.position.set(0, 1, 0); 
+    this.scene.add(this.light);
 
 
     // controls
@@ -105,34 +107,37 @@ export class Viewer3dService implements OnDestroy {
 
     // var clear
     canvasStatus = false;
+    // this.controls.addEventListener("change", this.light_update);
   }
 
+
+
+  
   public animate(): void {
-    this.camera.lookAt( this.scene.position );
 
     this.renderer.render(this.scene, this.camera);
 
     window.requestAnimationFrame(_ => this.animate());
   }
 
-  public render(): void {
-    this.camera.rotation.x += 0.01;
-    this.camera.rotation.y += 0.01;
-    this.renderer.render(this.scene, this.camera);
-    
-    this.frameId = requestAnimationFrame(() => {
-      this.render();
-    });
+  public light_update(): void {
+    console.log(this.light.position);
+    // this.light.position.copy( this.controls.position )
   }
 
   public resize(): void {
-    // const width = window.innerWidth;
-    // const height = window.innerHeight;
-    // this.camera.aspect = width / height;
     this.camera.updateProjectionMatrix();
+
+    // this.light.position.copy( this.camera.position )
+    this.scene.add(this.light);
 
     // this.renderer.setSize(width, height);
   }
 
+  public clearScene() {
+    while(this.scene.children.length > 0){ 
+      this.scene.remove(this.scene.children[0]); 
+    }
+  }
 
 }

@@ -5,6 +5,8 @@ import * as jQuery from 'jquery';
 import { DbfireService } from '../services/firebase/dbfire.service';
 import { TIMEOUT } from 'dns';
 import { TimeoutError } from 'rxjs';
+// fake users json
+import * as users from '../../assets/json/users.json';
 
 @Component({
   selector: 'app-home',
@@ -15,12 +17,17 @@ export class HomeComponent implements OnInit {
   showCanvas = false;
   result: any;
   stl: any;
-  usuarios: any[] = ['Pepe', 'Juan', 'Manolo', 'Antonio'];
-
+  jsusers: any[];
+  lastId: string;
   public constructor(private viewer: Viewer3dService, private dbfireService: DbfireService) {}
 
   public ngOnInit(): void {
     this.result = this.dbfireService.getURL('/img/temporizador.PNG');
+
+    // obtener JSON
+    for(const key in users) {
+      this.jsusers = users[key].results;
+    }
   }
 
   public loadCanvas(id) {
@@ -33,11 +40,17 @@ export class HomeComponent implements OnInit {
     var rendererCanvas = document.querySelector('#renderCanvas'+canvasNam) as HTMLCanvasElement;
     $('#containerC'+canvasNam).removeAttr('hidden');
     $('#carouselName'+canvasNam).hide().css("display", "none");
+    // ocultar canvas anterior
+    if(this.lastId) {
+      this.viewer.clearScene();
+      $('#containerC'+this.lastId).attr("hidden",'false');
+      $('#carouselName'+this.lastId).hide().css("display", "block");
+    }
     // crear escena canvas
     // this.stl = this.dbfireService.getURL('/STL/Temporizador.stl'); // cargar stl
-    this.viewer.createScene(rendererCanvas, this.stl, this.showCanvas);
+    this.viewer.createScene(rendererCanvas, 'https://cdn.coursesaver.com/files/Part26-4.STL', this.showCanvas);
     this.viewer.animate();
-    
+    this.lastId = canvasNam;
   }
 
 }
