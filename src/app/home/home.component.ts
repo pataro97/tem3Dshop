@@ -3,8 +3,6 @@ import {Viewer3dService} from '../services/viewer3d/viewer3d.service';
 import * as jQuery from 'jquery';
 // Firebase
 import { DbfireService } from '../services/firebase/dbfire.service';
-import { TIMEOUT } from 'dns';
-import { TimeoutError } from 'rxjs';
 // fake users json
 import * as users from '../../assets/json/users.json';
 
@@ -17,17 +15,20 @@ export class HomeComponent implements OnInit {
   showCanvas = false;
   result: any;
   stl: any;
-  jsusers: any[];
+  // Pulico para que pueda acceder en modo prod (ngFor)
+  public jsusers: any[] = users.results;
   lastId: string;
   public constructor(private viewer: Viewer3dService, private dbfireService: DbfireService) {}
 
   public ngOnInit(): void {
+    // imagen firebase
     this.result = this.dbfireService.getURL('/img/temporizador.PNG');
 
     // obtener JSON
-    for(const key in users) {
-      this.jsusers = users[key].results;
-    }
+    // for(const key in users) {
+    //   this.jsusers = users[key].results;
+    // }
+
   }
 
   public loadCanvas(id) {

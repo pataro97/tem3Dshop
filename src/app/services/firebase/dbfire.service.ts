@@ -14,7 +14,6 @@ export class DbfireService {
   }
   profileUrl: any;
 
-
   public getURL(url: string) {
     const ref = this.storage.ref(url);
     return this.profileUrl = ref.getDownloadURL();
